@@ -5,7 +5,7 @@ const getAll = async (req, res, table) => {
     const result = await pool.query(`SELECT * FROM ${table}`);
     res.json(result.rows);
   } catch (err) {
-    res.status(400).json({ error: err.detail });
+    res.status(400).json({ error: err });
   }
 };
 
@@ -20,7 +20,7 @@ const getById = async (req, res, table) => {
       res.status(404).json({ error: "Record not found" });
     }
   } catch (err) {
-    res.status(400).json({ error: err.detail });
+    res.status(400).json({ error: err });
   }
 };
 
@@ -37,7 +37,7 @@ const create = async (req, res, table) => {
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
-    res.status(400).json({ error: err.detail });
+    res.status(400).json({ error: err });
   }
 };
 
@@ -62,7 +62,7 @@ const updateById = async (req, res, table) => {
       res.status(404).json({ error: "Record not found" });
     }
   } catch (err) {
-    res.status(400).json({ error: err.detail });
+    res.status(400).json({ error: err });
   }
 };
 
@@ -73,7 +73,7 @@ const deleteById = async (req, res, table) => {
     await pool.query(`DELETE FROM ${table} WHERE id = ${id}`);
     res.json({ message: "Record deleted" });
   } catch (err) {
-    res.status(400).json({ error: err.detail });
+    res.status(400).json({ error: err });
   }
 };
 
