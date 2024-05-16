@@ -1,6 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const pool = require("./utils/db");
+const apiRouter = require("./routes");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -8,14 +9,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", async (req, res) => {
-  try {
-    const result = await pool.query("SELECT * FROM users");
-    res.json(result.rows);
-  } catch (err) {
-    res.status(400).json({ error: err.detail });
-  }
-});
+app.use("/api", apiRouter);
 
 app.listen(port, async () => {
   pool.query("SELECT 1 + 1 AS result", (err, res) => {
