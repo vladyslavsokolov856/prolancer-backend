@@ -1,7 +1,6 @@
 const express = require("express");
-const sequelize = require("./utils/db");
 const bodyParser = require("body-parser");
-const User = require("./models/User");
+const pool = require("./utils/db");
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -11,23 +10,22 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.get("/", async (req, res) => {
   try {
-    const users = await User.findAll({
-      attributes: ["id", "email", "phone", "first_name", "last_name"],
-    });
-    res.json(users);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ message: "Internal Server Error" });
+    const result = await pool.query("SELECT * FROM users");
+    res.json(result.rows);
+  } catch (err) {
+    res.status(400).json({ error: err.detail });
   }
 });
 
 app.listen(port, async () => {
-  console.log(`Server is running on port ${port}`);
+  pool.query("SELECT 1 + 1 AS result", (err, res) => {
+    if (err) {
+      console.error("Error connecting to the database:", err);
+      process.exit(1);
+    } else {
+      console.log("Database connection established");
+    }
+  });
 
-  try {
-    await sequelize.authenticate();
-    console.log("Connected to the database");
-  } catch (error) {
-    console.error("Unable to connect to the database:", error);
-  }
+  console.log(`Server is running on port ${port}`);
 });
