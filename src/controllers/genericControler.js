@@ -2,7 +2,7 @@ const pool = require("../utils/db");
 
 const getAll = async (req, res, table) => {
   try {
-    const result = await pool.query(`SELECT * FROM ${table}`);
+    const result = await pool.query(`SELECT * FROM ${table} WHERE deleted IS false`);
     res.json(result.rows);
   } catch (err) {
     res.status(400).json({ error: err });
@@ -13,7 +13,7 @@ const getById = async (req, res, table) => {
   const id = parseInt(req.params.id);
 
   try {
-    const result = await pool.query(`SELECT * FROM ${table} WHERE id = ${id}`);
+    const result = await pool.query(`SELECT * FROM ${table} WHERE id = ${id} AND deleted IS false`);
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
     } else {
@@ -53,7 +53,7 @@ const updateById = async (req, res, table) => {
     const result = await pool.query(
       `UPDATE "${table}" SET ${updates} WHERE id = $${
         Object.keys(req.body).length + 1
-      } RETURNING *`,
+      } AND deleted IS false RETURNING *`,
       [...Object.values(req.body), id]
     );
     if (result.rows.length > 0) {
@@ -70,7 +70,7 @@ const deleteById = async (req, res, table) => {
   const id = parseInt(req.params.id);
 
   try {
-    await pool.query(`DELETE FROM ${table} WHERE id = ${id}`);
+    await pool.query(`UPDATE ${table} SET deleted = true WHERE id = ${id} AND deleted IS false`);
     res.json({ message: "Record deleted" });
   } catch (err) {
     res.status(400).json({ error: err });
