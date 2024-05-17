@@ -70,8 +70,12 @@ const deleteById = async (req, res, table) => {
   const id = parseInt(req.params.id);
 
   try {
-    await pool.query(`UPDATE ${table} SET deleted = true WHERE id = ${id} AND deleted IS false`);
-    res.json({ message: "Record deleted" });
+    const result = await pool.query(`UPDATE ${table} SET deleted = true WHERE id = ${id} AND deleted IS false`);
+    if (result.rowCount > 0) {
+      res.json({ message: "Record deleted" });
+    } else {
+      res.status(404).json({ error: "Record not found" });
+    }
   } catch (err) {
     res.status(400).json({ error: err });
   }
