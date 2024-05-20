@@ -25,15 +25,19 @@ const getById = async (req, res, table) => {
 };
 
 const create = async (req, res, table) => {
-  const fields = Object.keys(req.body).join(", ");
-  const values = Object.values(req.body)
+  const body = { ...req.body };
+  delete body.id;
+  delete body.deleted;
+
+  const fields = Object.keys(body).join(", ");
+  const values = Object.values(body)
     .map((_, i) => `$${i + 1}`)
     .join(", ");
 
   try {
     const result = await pool.query(
       `INSERT INTO "${table}" (${fields}) VALUES (${values}) RETURNING *`,
-      Object.values(req.body)
+      Object.values(body)
     );
     res.status(201).json(result.rows[0]);
   } catch (err) {
@@ -43,18 +47,22 @@ const create = async (req, res, table) => {
 
 const updateById = async (req, res, table) => {
   const id = parseInt(req.params.id);
-  const updates = Object.entries(req.body)
+  const body = { ...req.body };
+  delete body.id;
+  delete body.deleted;
+
+  const updates = Object.entries(body)
     .map(
-      ([key, value]) => `${key} = $${Object.keys(req.body).indexOf(key) + 1}`
+      ([key, value]) => `${key} = $${Object.keys(body).indexOf(key) + 1}`
     )
     .join(", ");
 
   try {
     const result = await pool.query(
       `UPDATE "${table}" SET ${updates} WHERE id = $${
-        Object.keys(req.body).length + 1
+        Object.keys(body).length + 1
       } AND deleted IS false RETURNING *`,
-      [...Object.values(req.body), id]
+      [...Object.values(body), id]
     );
     if (result.rows.length > 0) {
       res.json(result.rows[0]);
