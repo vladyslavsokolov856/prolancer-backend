@@ -1,8 +1,7 @@
 const { Pool } = require("pg");
+const pgp = require("pg-promise")();
 require("dotenv").config();
 
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
+const db = pgp({ connectionString: process.env.DATABASE_URL });
 
-module.exports = pool;
+module.exports = db;
