@@ -2,8 +2,10 @@ const pool = require("../utils/db");
 
 const getAll = async (req, res, table) => {
   try {
-    const result = await pool.query(`SELECT * FROM ${table} WHERE deleted IS false`);
-    res.json(result.rows);
+    const result = await pool.query(
+      `SELECT * FROM ${table} WHERE deleted IS false`
+    );
+    res.json(result);
   } catch (err) {
     res.status(400).json({ error: err });
   }
@@ -13,9 +15,11 @@ const getById = async (req, res, table) => {
   const id = parseInt(req.params.id);
 
   try {
-    const result = await pool.query(`SELECT * FROM ${table} WHERE id = ${id} AND deleted IS false`);
-    if (result.rows.length > 0) {
-      res.json(result.rows[0]);
+    const result = await pool.query(
+      `SELECT * FROM ${table} WHERE id = ${id} AND deleted IS false`
+    );
+    if (result.length > 0) {
+      res.json(result[0]);
     } else {
       res.status(404).json({ error: "Record not found" });
     }
@@ -39,7 +43,7 @@ const create = async (req, res, table) => {
       `INSERT INTO "${table}" (${fields}) VALUES (${values}) RETURNING *`,
       Object.values(body)
     );
-    res.status(201).json(result.rows[0]);
+    res.status(201).json(result[0]);
   } catch (err) {
     res.status(400).json({ error: err });
   }
@@ -52,9 +56,7 @@ const updateById = async (req, res, table) => {
   delete body.deleted;
 
   const updates = Object.entries(body)
-    .map(
-      ([key, value]) => `${key} = $${Object.keys(body).indexOf(key) + 1}`
-    )
+    .map(([key, value]) => `${key} = $${Object.keys(body).indexOf(key) + 1}`)
     .join(", ");
 
   try {
@@ -64,8 +66,8 @@ const updateById = async (req, res, table) => {
       } AND deleted IS false RETURNING *`,
       [...Object.values(body), id]
     );
-    if (result.rows.length > 0) {
-      res.json(result.rows[0]);
+    if (result.length > 0) {
+      res.json(result[0]);
     } else {
       res.status(404).json({ error: "Record not found" });
     }
@@ -78,7 +80,9 @@ const deleteById = async (req, res, table) => {
   const id = parseInt(req.params.id);
 
   try {
-    const result = await pool.query(`UPDATE ${table} SET deleted = true WHERE id = ${id} AND deleted IS false`);
+    const result = await pool.query(
+      `UPDATE ${table} SET deleted = true WHERE id = ${id} AND deleted IS false`
+    );
     if (result.rowCount > 0) {
       res.json({ message: "Record deleted" });
     } else {
