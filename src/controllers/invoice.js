@@ -75,7 +75,18 @@ const invoicesController = {
         ORDER BY
             invoices.id DESC;
       `);
-      res.json(result.map(({ invoice }) => invoice));
+      res.json(
+        result.map(({ invoice }) => {
+          let amount = 0;
+          invoice.order_lines.forEach((orderLine) => {
+            const quantity = orderLine.quantity || 0;
+            const unitPrice = orderLine.unit_price || 0;
+            amount += quantity * unitPrice;
+          });
+          invoice.amount = amount;
+          return invoice;
+        })
+      );
     } catch (err) {
       res.status(400).json({ error: err });
     }
