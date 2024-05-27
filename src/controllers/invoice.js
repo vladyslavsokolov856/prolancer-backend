@@ -11,7 +11,7 @@ const pool = require("../utils/db");
 const BASE_TABLE = "invoices";
 
 const invoicesController = {
-  getAll: async (req, res) => getAll(req, res, BASE_TABLE),
+  getAll: (req, res) => getAll(req, res, BASE_TABLE),
   getById: (req, res) => getById(req, res, BASE_TABLE),
   create: async (req, res) => {
     const { order_lines, id, deleted, ...rest } = req.body;
