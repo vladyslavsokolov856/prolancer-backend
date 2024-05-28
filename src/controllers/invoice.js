@@ -46,7 +46,29 @@ const invoicesController = {
     }
   },
   updateById: (req, res) => updateById(req, res, BASE_TABLE),
-  deleteById: (req, res) => deleteById(req, res, BASE_TABLE),
+  deleteById: async (req, res) => {
+    const id = parseInt(req.params.id);
+
+    try {
+      const result = await pool.query(
+        `SELECT * FROM ${BASE_TABLE} WHERE id = ${id} AND deleted IS false`
+      );
+
+      if (!(result.length > 0)) {
+        res.status(404).json({ error: "Record not found" });
+        return;
+      }
+
+      const invoice = result[0];
+      if (invoice.status === "draft") {
+        return deleteById(req, res, BASE_TABLE);
+      }
+
+      res.status(400).json({ error: "Only draft invoices can be deleted." });
+    } catch (err) {
+      res.status(400).json({ error: err });
+    }
+  },
 };
 
 module.exports = invoicesController;
