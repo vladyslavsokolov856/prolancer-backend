@@ -3,7 +3,7 @@ const pool = require("../utils/db");
 const getAll = async (req, res, table) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM ${table} WHERE deleted IS false`
+      `SELECT * FROM ${table} WHERE deleted IS false ORDER BY id ASC`
     );
     res.json(result);
   } catch (err) {
