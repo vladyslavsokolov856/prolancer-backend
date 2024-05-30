@@ -7,6 +7,7 @@ const workLogRouter = require("./workLog");
 const taskRouter = require("./task");
 const jobTypeRouter = require("./jobType");
 const orderLinesRouter = require("./orderLine");
+const deductionRouter = require("./deduction");
 
 apiRouter.use("/customers", customerRouter);
 apiRouter.use("/users", userRouter);
@@ -15,5 +16,6 @@ apiRouter.use("/work-logs", workLogRouter);
 apiRouter.use("/tasks", taskRouter);
 apiRouter.use("/job-types", jobTypeRouter);
 apiRouter.use("/order-lines", orderLinesRouter);
+apiRouter.use("/deductions", deductionRouter);
 
 module.exports = apiRouter;
