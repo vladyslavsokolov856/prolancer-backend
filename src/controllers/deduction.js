@@ -1,12 +1,6 @@
 const path = require("path");
 const pool = require("../utils/db");
-const {
-  getAll,
-  getById,
-  create,
-  updateById,
-  deleteById,
-} = require("./genericControler");
+const { getAll, getById, create, deleteById } = require("./genericControler");
 
 const BASE_TABLE = "deductions";
 
@@ -15,7 +9,9 @@ const deductionsController = {
   getById: (req, res) => getById(req, res, BASE_TABLE),
   create: async (req, res) => {
     const { image_url, id, deleted, ...data } = req.body;
-    const { filename } = req.file;
+    const { filename } = req.file || {};
+
+    data["user_id"] = 1; // TODO: replace with authenticated user id
 
     const fields = Object.keys(data).join(", ");
     const values = Object.values(data)
@@ -41,7 +37,9 @@ const deductionsController = {
   updateById: async (req, res) => {
     const deductionId = req.params.id;
     const { image_url, id, deleted, ...data } = req.body;
-    const { filename } = req.file;
+    const { filename } = req.file || {};
+
+    data["user_id"] = 1; // TODO: replace with authenticated user id
 
     try {
       let [result] = await pool.query(
