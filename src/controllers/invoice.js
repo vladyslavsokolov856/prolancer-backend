@@ -8,7 +8,7 @@ const invoicesController = {
   getAll: (req, res) => getAll(req, res, BASE_TABLE),
   getById: (req, res) => getById(req, res, BASE_TABLE),
   create: async (req, res) => {
-    const { order_lines, id, deleted, ...rest } = req.body;
+    const { order_lines = [], id, deleted, ...rest } = req.body;
 
     const fields = Object.keys(rest).join(", ");
     const values = Object.values(rest)
@@ -43,7 +43,7 @@ const invoicesController = {
   updateById: async (req, res) => {
     const invoiceId = req.params.id;
 
-    const { order_lines, id, deleted, ...rest } = req.body;
+    const { order_lines = [], id, deleted, ...rest } = req.body;
 
     const updates = Object.entries(rest)
       .map(([key, value]) => `${key} = $${Object.keys(rest).indexOf(key) + 1}`)
