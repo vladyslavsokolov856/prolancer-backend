@@ -17,10 +17,39 @@ const tasksController = {
 
     try {
       const result = await pool.query(
-        `SELECT * FROM tasks WHERE identifier = '${identifier}' AND deleted IS false`
+        `
+        SELECT 
+          t.*, 
+          c.name_contact_person,
+          c.email_contact_person,
+          c.phone_contact_person,
+          c.address,
+          c.city,
+          c.postal_code
+        FROM tasks t
+        JOIN customers c ON t.customer_id = c.id
+        WHERE t.identifier = '${identifier}' AND t.deleted IS false
+        `
       );
       if (result.length > 0) {
-        res.json(result[0]);
+        const task = result[0];
+        const customer = {
+          name_contact_person: task.name_contact_person,
+          email_contact_person: task.email_contact_person,
+          phone_contact_person: task.phone_contact_person,
+          address: task.address,
+          city: task.city,
+          postal_code: task.postal_code,
+        };
+
+        delete task.name_contact_person;
+        delete task.email_contact_person;
+        delete task.phone_contact_person;
+        delete task.address;
+        delete task.city;
+        delete task.postal_code;
+
+        res.json({ ...task, customer });
       } else {
         res.status(404).json({ error: "Record not found" });
       }
