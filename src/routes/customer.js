@@ -7,11 +7,12 @@ const {
   updateById,
   deleteById,
 } = require("../controllers/customer");
+const authenticateToken = require("../middlewares/authentication");
 
-customerRouter.get("/:id", getById);
-customerRouter.get("/", getAll);
-customerRouter.post("/", create);
-customerRouter.put("/:id", updateById);
-customerRouter.delete("/:id", deleteById);
+customerRouter.get("/:id", authenticateToken, getById);
+customerRouter.get("/", authenticateToken, getAll);
+customerRouter.post("/", authenticateToken, create);
+customerRouter.put("/:id", authenticateToken, updateById);
+customerRouter.delete("/:id", authenticateToken, deleteById);
 
 module.exports = customerRouter;

@@ -7,11 +7,12 @@ const {
   updateById,
   deleteById,
 } = require("../controllers/orderLine");
+const authenticateToken = require("../middlewares/authentication");
 
-orderLinesRouter.get("/:id", getById);
-orderLinesRouter.get("/", getAll);
-orderLinesRouter.post("/", create);
-orderLinesRouter.put("/:id", updateById);
-orderLinesRouter.delete("/:id", deleteById);
+orderLinesRouter.get("/:id", authenticateToken, getById);
+orderLinesRouter.get("/", authenticateToken, getAll);
+orderLinesRouter.post("/", authenticateToken, create);
+orderLinesRouter.put("/:id", authenticateToken, updateById);
+orderLinesRouter.delete("/:id", authenticateToken, deleteById);
 
 module.exports = orderLinesRouter;
