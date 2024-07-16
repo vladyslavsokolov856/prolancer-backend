@@ -16,7 +16,7 @@ app.use(cors());
 
 passport.use(
   new ZitadelIntrospectionStrategy({
-    authority: "http://prolancer-authentication-ebcf8a4aae1e.herokuapp.com",
+    authority: process.env.ZITADEL_AUTHORITY,
     authorization: {
       type: "jwt-profile",
       profile: {
