@@ -7,12 +7,11 @@ const {
   updateById,
   deleteById,
 } = require("../controllers/invoice");
-const authenticateToken = require("../middlewares/authentication");
 
-invoiceRouter.get("/:id", authenticateToken, getById);
-invoiceRouter.get("/", authenticateToken, getAll);
-invoiceRouter.post("/", authenticateToken, create);
-invoiceRouter.put("/:id", authenticateToken, updateById);
-invoiceRouter.delete("/:id", authenticateToken, deleteById);
+invoiceRouter.get("/:id", getById);
+invoiceRouter.get("/", getAll);
+invoiceRouter.post("/", create);
+invoiceRouter.put("/:id", updateById);
+invoiceRouter.delete("/:id", deleteById);
 
 module.exports = invoiceRouter;

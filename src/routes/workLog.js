@@ -7,12 +7,11 @@ const {
   updateById,
   deleteById,
 } = require("../controllers/workLog");
-const authenticateToken = require("../middlewares/authentication");
 
-workLogRouter.get("/:id", authenticateToken, getById);
-workLogRouter.get("/", authenticateToken, getAll);
-workLogRouter.post("/", authenticateToken, create);
-workLogRouter.put("/:id", authenticateToken, updateById);
-workLogRouter.delete("/:id", authenticateToken, deleteById);
+workLogRouter.get("/:id", getById);
+workLogRouter.get("/", getAll);
+workLogRouter.post("/", create);
+workLogRouter.put("/:id", updateById);
+workLogRouter.delete("/:id", deleteById);
 
 module.exports = workLogRouter;

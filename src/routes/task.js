@@ -8,13 +8,12 @@ const {
   deleteById,
   getByTaskIdentifier,
 } = require("../controllers/task");
-const authenticateToken = require("../middlewares/authentication");
 
-taskRouter.get("/:id", authenticateToken, getById);
-taskRouter.get("/", authenticateToken, getAll);
-taskRouter.post("/", authenticateToken, create);
-taskRouter.put("/:id", authenticateToken, updateById);
-taskRouter.delete("/:id", authenticateToken, deleteById);
-taskRouter.post("/details", authenticateToken, getByTaskIdentifier);
+taskRouter.get("/:id", getById);
+taskRouter.get("/", getAll);
+taskRouter.post("/", create);
+taskRouter.put("/:id", updateById);
+taskRouter.delete("/:id", deleteById);
+taskRouter.post("/details", getByTaskIdentifier);
 
 module.exports = taskRouter;
