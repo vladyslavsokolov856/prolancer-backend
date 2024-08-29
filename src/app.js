@@ -30,9 +30,9 @@ passport.use(
   })
 );
 
-// app.use(passport.initialize());
+app.use(passport.initialize());
 
-// app.use(passport.authenticate("zitadel-introspection", { session: false }));
+app.use(passport.authenticate("zitadel-introspection", { session: false }));
 
 app.use("/api", apiRouter);
 

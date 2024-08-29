@@ -13,6 +13,11 @@ const deductionsController = {
 
     data["user_id"] = 1; // TODO: replace with authenticated user id
 
+    // Default status to sent if not provided
+    if(!data.status) {
+      data.status = "sent";
+    }
+
     const fields = Object.keys(data).join(", ");
     const values = Object.values(data)
       .map((_, i) => `$${i + 1}`)
