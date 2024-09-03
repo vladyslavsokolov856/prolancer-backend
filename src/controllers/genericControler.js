@@ -33,15 +33,21 @@ const create = async (req, res, table) => {
   delete body.id;
   delete body.deleted;
 
-  const fields = Object.keys(body).join(", ");
+  const withoutUserIdTableList = ["job_types", "order_lines", "payments"];
+  const isUserIdNeeded = !withoutUserIdTableList.includes(table);
+
+  const fields = Object.keys(body)
+    .concat(isUserIdNeeded ? ["user_id"] : [])
+    .join(", ");
   const values = Object.values(body)
+    .concat(isUserIdNeeded ? [req.user.id] : [])
     .map((_, i) => `$${i + 1}`)
     .join(", ");
 
   try {
     const result = await pool.query(
       `INSERT INTO "${table}" (${fields}) VALUES (${values}) RETURNING *`,
-      Object.values(body)
+      Object.values(body).concat(isUserIdNeeded ? [req.user.id] : [])
     );
     res.status(201).json(result[0]);
   } catch (err) {
