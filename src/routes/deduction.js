@@ -9,12 +9,13 @@ const {
   attachment,
 } = require("../controllers/deduction");
 const upload = require("../utils/storage");
-
-deductionRouter.get("/:id", getById);
+const authorizationMiddleware = require("../middlewares/authorization");
+const BASE_TABLE = "deductions";
+deductionRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
 deductionRouter.get("/", getAll);
 deductionRouter.post("/", upload.single("attachment"), create);
-deductionRouter.put("/:id", upload.single("attachment"), updateById);
-deductionRouter.delete("/:id", deleteById);
+deductionRouter.put("/:id", authorizationMiddleware(BASE_TABLE), upload.single("attachment"), updateById);
+deductionRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
 deductionRouter.get("/:id/attachments/:filename", attachment);
 
 module.exports = deductionRouter;

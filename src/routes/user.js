@@ -7,11 +7,13 @@ const {
     updateById,
     deleteById,
 } = require("../controllers/user");
+const authorizationMiddleware = require("../middlewares/authorization");
+const BASE_TABLE = "users";
 
-userRouter.get("/:id", getById);
+userRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
 userRouter.get("/", getAll);
-userRouter.post("/", create);
-userRouter.put("/:id", updateById);
-userRouter.delete("/:id", deleteById);
+userRouter.post("/", authorizationMiddleware(BASE_TABLE), create);
+userRouter.put("/:id", authorizationMiddleware(BASE_TABLE), updateById);
+userRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
 
 module.exports = userRouter;
