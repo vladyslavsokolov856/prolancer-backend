@@ -8,12 +8,16 @@ const {
   deleteById,
   getByTaskIdentifier,
 } = require("../controllers/task");
+const authorizationMiddleware = require("../middlewares/authorization");
 
-taskRouter.get("/:id", getById);
+const BASE_TABLE = "tasks";
+
 taskRouter.get("/", getAll);
 taskRouter.post("/", create);
+taskRouter.post("/details", getByTaskIdentifier);
+taskRouter.use(authorizationMiddleware(BASE_TABLE))
+taskRouter.get("/:id", getById);
 taskRouter.put("/:id", updateById);
 taskRouter.delete("/:id", deleteById);
-taskRouter.post("/details", getByTaskIdentifier);
 
 module.exports = taskRouter;

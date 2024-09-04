@@ -7,10 +7,14 @@ const {
   updateById,
   deleteById,
 } = require("../controllers/workLog");
+const authorizationMiddleware = require("../middlewares/authorization");
+const BASE_TABLE = "work_logs";
 
-workLogRouter.get("/:id", getById);
+
 workLogRouter.get("/", getAll);
-workLogRouter.post("/", create);
+workLogRouter.post("/",  create);
+workLogRouter.use(authorizationMiddleware(BASE_TABLE))
+workLogRouter.get("/:id", getById);
 workLogRouter.put("/:id", updateById);
 workLogRouter.delete("/:id", deleteById);
 
