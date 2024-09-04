@@ -13,9 +13,8 @@ const BASE_TABLE = "invoices";
 
 invoiceRouter.get("/", getAll);
 invoiceRouter.post("/", create);
-invoiceRouter.use(authorizationMiddleware(BASE_TABLE))
-invoiceRouter.get("/:id", getById);
-invoiceRouter.put("/:id", updateById);
-invoiceRouter.delete("/:id", deleteById);
+invoiceRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
+invoiceRouter.put("/:id", authorizationMiddleware(BASE_TABLE), updateById);
+invoiceRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
 
 module.exports = invoiceRouter;

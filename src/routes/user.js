@@ -12,9 +12,8 @@ const BASE_TABLE = "users";
 
 userRouter.get("/", getAll);
 userRouter.post("/", create);
-userRouter.use(authorizationMiddleware(BASE_TABLE))
-userRouter.get("/:id", getById);
-userRouter.put("/:id", updateById);
-userRouter.delete("/:id", deleteById);
+userRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
+userRouter.put("/:id", authorizationMiddleware(BASE_TABLE), updateById);
+userRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
 
 module.exports = userRouter;
