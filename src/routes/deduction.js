@@ -17,9 +17,8 @@ const BASE_TABLE = "deductions";
 deductionRouter.get("/", getAll);
 deductionRouter.get("/:id/attachments/:filename", attachment);
 deductionRouter.post("/", upload.single("attachment"), create);
-deductionRouter.use(authorizationMiddleware(BASE_TABLE))
-deductionRouter.get("/:id", getById);
-deductionRouter.put("/:id", upload.single("attachment"), updateById);
-deductionRouter.delete("/:id", deleteById);
+deductionRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
+deductionRouter.put("/:id", authorizationMiddleware(BASE_TABLE), upload.single("attachment"), updateById);
+deductionRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
 
 module.exports = deductionRouter;
