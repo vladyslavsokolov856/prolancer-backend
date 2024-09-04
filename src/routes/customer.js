@@ -10,10 +10,11 @@ const {
 const authorizationMiddleware = require("../middlewares/authorization");
 
 const BASE_TABLE = "customers";
-customerRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
 customerRouter.get("/", getAll);
 customerRouter.post("/", create);
-customerRouter.put("/:id", authorizationMiddleware(BASE_TABLE), updateById);
-customerRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
+customerRouter.use(authorizationMiddleware(BASE_TABLE))
+customerRouter.get("/:id", getById);
+customerRouter.put("/:id", updateById);
+customerRouter.delete("/:id", deleteById);
 
 module.exports = customerRouter;

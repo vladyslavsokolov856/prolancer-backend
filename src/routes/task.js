@@ -11,10 +11,13 @@ const {
 const authorizationMiddleware = require("../middlewares/authorization");
 
 const BASE_TABLE = "tasks";
-taskRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
+
 taskRouter.get("/", getAll);
 taskRouter.post("/", create);
-taskRouter.put("/:id", authorizationMiddleware(BASE_TABLE), updateById);
-taskRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
 taskRouter.post("/details", getByTaskIdentifier);
+taskRouter.use(authorizationMiddleware(BASE_TABLE))
+taskRouter.get("/:id", getById);
+taskRouter.put("/:id", updateById);
+taskRouter.delete("/:id", deleteById);
+
 module.exports = taskRouter;

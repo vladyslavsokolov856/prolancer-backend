@@ -8,7 +8,7 @@ const authorizationMiddleware = (tableName) => {
       const queryValues = [resourceId, userId];
       const result = await pool.query(queryText, queryValues);
       if (result.length === 0) {
-        return res.status(403).json({ message: "Unauthorized access" });
+        return res.sendStatus(403);
       }
 
       next();
