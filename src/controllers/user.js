@@ -16,9 +16,7 @@ const usersController = {
     updateById: (req, res) => updateById(req, res, BASE_TABLE),
     deleteById: (req, res) => deleteById(req, res, BASE_TABLE),
     getUser: (req, res) => {
-        if (req.user)
-            req.params.id = req.user.id
-        return getById(req, res, BASE_TABLE)
+        return res.status(200).json(req.user)
     },
 };
 
