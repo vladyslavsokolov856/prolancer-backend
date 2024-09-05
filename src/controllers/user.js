@@ -15,6 +15,11 @@ const usersController = {
     create: (req, res) => create(req, res, BASE_TABLE),
     updateById: (req, res) => updateById(req, res, BASE_TABLE),
     deleteById: (req, res) => deleteById(req, res, BASE_TABLE),
+    getUser: (req, res) => {
+        if (req.user)
+            req.params.id = req.user.id
+        return getById(req, res, BASE_TABLE)
+    },
 };
 
 module.exports = usersController;
