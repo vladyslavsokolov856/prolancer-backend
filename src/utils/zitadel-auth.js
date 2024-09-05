@@ -18,7 +18,6 @@ const zitadelAuth = app => {
 
         if(findRoute) return next();
 
-        console.log("path", req.path)
         if (iss != process.env.ZITADEL_AUTHORITY)
             return res.sendStatus(401);
 
