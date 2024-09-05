@@ -1,9 +1,11 @@
 const pool = require("../utils/db");
 
+const withoutUserIdTableList = ["job_types", "order_lines", "payments", "users"];
+
 const getAll = async (req, res, table) => {
   try {
     const result = await pool.query(
-      `SELECT * FROM ${table} WHERE deleted IS false ORDER BY id ASC`
+      `SELECT * FROM ${table} WHERE deleted IS false ${!withoutUserIdTableList.includes(table) ? `AND user_id = ${req.user.id}` : ""} ORDER BY id ASC`
     );
     res.json(result);
   } catch (err) {
@@ -33,7 +35,6 @@ const create = async (req, res, table) => {
   delete body.id;
   delete body.deleted;
 
-  const withoutUserIdTableList = ["job_types", "order_lines", "payments"];
   const isUserIdNeeded = !withoutUserIdTableList.includes(table);
 
   const fields = Object.keys(body)
@@ -67,8 +68,7 @@ const updateById = async (req, res, table) => {
 
   try {
     const result = await pool.query(
-      `UPDATE "${table}" SET ${updates} WHERE id = $${
-        Object.keys(body).length + 1
+      `UPDATE "${table}" SET ${updates} WHERE id = $${Object.keys(body).length + 1
       } AND deleted IS false RETURNING *`,
       [...Object.values(body), id]
     );
