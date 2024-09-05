@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
 const pool = require("./db");
 
+const ignoreAuthRoutes = [
+    /^\/api\/deductions\/[^\/]+\/attachments\/[^\/]+$/
+]
+
 const zitadelAuth = app => {
     app.use(async (req, res, next) => {
         const idToken = req.headers["x-id"];
@@ -10,6 +14,11 @@ const zitadelAuth = app => {
 
         const table = "users";
 
+        const findRoute = ignoreAuthRoutes.find((route) => route.test(req.path));
+
+        if(findRoute) return next();
+
+        console.log("path", req.path)
         if (iss != process.env.ZITADEL_AUTHORITY)
             return res.sendStatus(401);
 
