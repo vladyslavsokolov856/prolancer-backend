@@ -14,7 +14,7 @@ const deductionsController = {
     data["user_id"] = 1; // TODO: replace with authenticated user id
 
     // Default status to sent if not provided
-    if(!data.status) {
+    if (!data.status) {
       data.status = "sent";
     }
 

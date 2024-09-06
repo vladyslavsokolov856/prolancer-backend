@@ -7,11 +7,14 @@ const {
   updateById,
   deleteById,
 } = require("../controllers/invoice");
+const authorizationMiddleware = require("../middlewares/authorization");
 
-invoiceRouter.get("/:id", getById);
+const BASE_TABLE = "invoices";
+
 invoiceRouter.get("/", getAll);
 invoiceRouter.post("/", create);
-invoiceRouter.put("/:id", updateById);
-invoiceRouter.delete("/:id", deleteById);
+invoiceRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
+invoiceRouter.put("/:id", authorizationMiddleware(BASE_TABLE), updateById);
+invoiceRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
 
 module.exports = invoiceRouter;

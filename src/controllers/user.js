@@ -15,6 +15,9 @@ const usersController = {
     create: (req, res) => create(req, res, BASE_TABLE),
     updateById: (req, res) => updateById(req, res, BASE_TABLE),
     deleteById: (req, res) => deleteById(req, res, BASE_TABLE),
+    getUser: (req, res) => {
+        return res.status(200).json(req.user)
+    },
 };
 
 module.exports = usersController;
