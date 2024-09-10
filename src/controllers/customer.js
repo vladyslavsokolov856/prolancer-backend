@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const pool = require("../utils/db");
 const {
   getAll,
@@ -13,11 +14,21 @@ const customersController = {
   getAll: (req, res) => getAll(req, res, BASE_TABLE),
   getById: (req, res) => getById(req, res, BASE_TABLE),
   create: (req, res) => {
-    req.body.ean = req.body.ean === "" ? null : req.body.ean
-    console.log(req.body)
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     return create(req, res, BASE_TABLE);
   },
-  updateById: (req, res) => updateById(req, res, BASE_TABLE),
+  updateById: (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
+    updateById(req, res, BASE_TABLE);
+  },
   deleteById: (req, res) => deleteById(req, res, BASE_TABLE),
 };
 
