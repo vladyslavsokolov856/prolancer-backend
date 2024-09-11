@@ -1,5 +1,12 @@
 const { body } = require("express-validator");
 
+const isStringOrNumber = (value) => {
+  if (typeof value === "string" || typeof value === "number") {
+    return true;
+  }
+  throw new Error("Value must be either a string or a number.");
+};
+
 const customerValidators = [
   body("country")
     .isLength({ max: 2, min: 2 })
@@ -15,7 +22,7 @@ const customerValidators = [
     .withMessage("Contact person name is required."),
   body("email_contact_person").isEmail().withMessage("Invalid email format."),
   body("phone_contact_person")
-    .isString()
+    .custom(isStringOrNumber)
     .trim()
     .matches(/^[0-9]{10,15}$/)
     .withMessage("Phone number must be between 10 and 15 digits.")
@@ -23,20 +30,40 @@ const customerValidators = [
   body("address").isString(),
   body("city").isString().withMessage("City must be a string."),
   body("postal_code")
-    .isString()
-    .customSanitizer((value) => value.replace(/\D/g, "")),
+    .custom(isStringOrNumber)
+    .customSanitizer((value) =>
+      typeof value === "string" ? value.replace(/\D/g, "") : value
+    ),
   body("payment_due_days")
     .optional({ nullable: true })
-    .isString()
-    .customSanitizer((value) => value.replace(/\D/g, "") || null),
+    .custom(isStringOrNumber)
+    .customSanitizer((value) =>
+      value
+        ? typeof value === "string"
+          ? value.replace(/\D/g, "")
+          : value
+        : null
+    ),
   body("company_id")
     .optional()
-    .isString()
-    .customSanitizer((value) => value.replace(/\D/g, "") || null),
+    .custom(isStringOrNumber)
+    .customSanitizer((value) =>
+      value
+        ? typeof value === "string"
+          ? value.replace(/\D/g, "")
+          : value
+        : null
+    ),
   body("ean")
     .optional()
-    .isString()
-    .customSanitizer((value) => value.replace(/\D/g, "") || null),
+    .custom(isStringOrNumber)
+    .customSanitizer((value) =>
+      value
+        ? typeof value === "string"
+          ? value.replace(/\D/g, "")
+          : value
+        : null
+    ),
 ];
 
 module.exports = customerValidators;
