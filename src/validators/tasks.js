@@ -47,7 +47,7 @@ const taskValidators = [
     .withMessage("Expected minutes must be required.")
     .isString()
     .customSanitizer((value) => {
-      return parseInt(value.replace(/\D/g, ""), 10);
+      return parseInt(`${value}`.replace(/\D/g, ""), 10);
     })
     .isInt()
     .withMessage("expected_minutes must be a valid integer"),
@@ -85,7 +85,7 @@ const taskValidators = [
     .withMessage("Payment term days must be required.")
     .isString()
     .customSanitizer((value) => {
-      return parseInt(value.replace(/\D/g, ""), 10);
+      return parseInt(`${value}`.replace(/\D/g, ""), 10);
     })
     .isInt()
     .withMessage("payment_term_days must be a valid integer"),
