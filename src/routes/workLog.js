@@ -8,13 +8,14 @@ const {
   deleteById,
 } = require("../controllers/workLog");
 const authorizationMiddleware = require("../middlewares/authorization");
+const workLogValidators = require("../validators/workLog");
 const BASE_TABLE = "work_logs";
 
 
 workLogRouter.get("/", getAll);
-workLogRouter.post("/", create);
+workLogRouter.post("/", workLogValidators, create);
 workLogRouter.get("/:id", authorizationMiddleware(BASE_TABLE), getById);
-workLogRouter.put("/:id", authorizationMiddleware(BASE_TABLE), updateById);
+workLogRouter.put("/:id", workLogValidators, authorizationMiddleware(BASE_TABLE), updateById);
 workLogRouter.delete("/:id", authorizationMiddleware(BASE_TABLE), deleteById);
 
 module.exports = workLogRouter;
