@@ -9,10 +9,7 @@ const deductionsController = {
   getAll: (req, res) => getAll(req, res, BASE_TABLE),
   getById: (req, res) => getById(req, res, BASE_TABLE),
   create: async (req, res) => {
-    console.log(req.body);
     const errors = validationResult(req.body);
-    console.log(errors);
-    console.log('1');
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
