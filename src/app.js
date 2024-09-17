@@ -26,7 +26,7 @@ app.listen(port, async () => {
       console.error("Error connecting to the database:", err);
       process.exit(1);
     } else {
-      console.log("Database connection established");
+      console.log("Database connection established!");
     }
   });
 
