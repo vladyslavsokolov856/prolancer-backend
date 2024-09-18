@@ -1,6 +1,7 @@
 const path = require("path");
 const pool = require("../utils/db");
 const { getAll, getById, create, deleteById } = require("./genericControler");
+const { validationResult } = require("express-validator")
 
 const BASE_TABLE = "deductions";
 
@@ -8,6 +9,11 @@ const deductionsController = {
   getAll: (req, res) => getAll(req, res, BASE_TABLE),
   getById: (req, res) => getById(req, res, BASE_TABLE),
   create: async (req, res) => {
+    const errors = validationResult(req.body);
+    if (!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     const { image_url, id, deleted, ...data } = req.body;
     const { filename } = req.file || {};
 
@@ -40,6 +46,12 @@ const deductionsController = {
     }
   },
   updateById: async (req, res) => {
+
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+      return res.status(422).json({ errors: errors.array() });
+    }
+
     const deductionId = req.params.id;
     const { image_url, id, deleted, ...data } = req.body;
     const { filename } = req.file || {};
