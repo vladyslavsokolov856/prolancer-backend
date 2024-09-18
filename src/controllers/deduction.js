@@ -11,7 +11,7 @@ const deductionsController = {
   create: async (req, res) => {
     const errors = validationResult(req.body);
     if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
 
     const { image_url, id, deleted, ...data } = req.body;
@@ -49,7 +49,7 @@ const deductionsController = {
 
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
+      return res.status(422).json({ errors: errors.array() });
     }
 
     const deductionId = req.params.id;
