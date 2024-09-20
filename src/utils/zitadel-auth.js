@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 const pool = require("./db");
 
 const ignoreAuthRoutes = [
-    /^\/api\/deductions\/[^\/]+\/attachments\/[^\/]+$/
+    /^\/api\/(deductions|mileages)\/[^\/]+\/attachments\/[^\/]+$/
 ]
 
 const zitadelAuth = app => {
