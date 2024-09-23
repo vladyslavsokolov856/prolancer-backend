@@ -8,6 +8,7 @@ const taskRouter = require("./task");
 const jobTypeRouter = require("./jobType");
 const orderLinesRouter = require("./orderLine");
 const deductionRouter = require("./deduction");
+const mileageRouter = require("./mileage");
 
 apiRouter.use("/customers", customerRouter);
 apiRouter.use("/users", userRouter);
@@ -17,5 +18,6 @@ apiRouter.use("/tasks", taskRouter);
 apiRouter.use("/job-types", jobTypeRouter);
 apiRouter.use("/order-lines", orderLinesRouter);
 apiRouter.use("/deductions", deductionRouter);
+apiRouter.use("/mileages", mileageRouter);
 
 module.exports = apiRouter;
