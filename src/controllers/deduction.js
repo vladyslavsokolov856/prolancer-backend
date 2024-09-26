@@ -11,7 +11,7 @@ const deductionsController = {
     const { image_url, id, deleted, ...data } = req.body;
     const { filename } = req.file || {};
 
-    data["user_id"] = 1; // TODO: replace with authenticated user id
+    data["user_id"] = req.user.id;
 
     // Default status to sent if not provided
     if (!data.status) {
@@ -44,7 +44,7 @@ const deductionsController = {
     const { image_url, id, deleted, ...data } = req.body;
     const { filename } = req.file || {};
 
-    data["user_id"] = 1; // TODO: replace with authenticated user id
+    data["user_id"] = req.user.id;
 
     try {
       let [result] = await pool.query(
