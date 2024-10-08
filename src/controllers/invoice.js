@@ -10,6 +10,7 @@ const invoicesController = {
   create: async (req, res) => {
     const { order_lines = [], id, deleted, ...rest } = req.body;
 
+    rest.user_id = req.user.id;
     const fields = Object.keys(rest).join(", ");
     const values = Object.values(rest)
       .map((_, i) => `$${i + 1}`)
