@@ -5,6 +5,7 @@ const {
   updateById,
   deleteById,
 } = require("./genericControler");
+const pool = require("../utils/db");
 
 const BASE_TABLE = "order_lines";
 
@@ -14,6 +15,15 @@ const orderLinesController = {
   create: (req, res) => create(req, res, BASE_TABLE),
   updateById: (req, res) => updateById(req, res, BASE_TABLE),
   deleteById: (req, res) => deleteById(req, res, BASE_TABLE),
+  getInvoiceById: async (req, res) => {
+    const { id } = req.params;
+    try {
+      const result = await pool.query('SELECT * FROM order_lines WHERE deleted IS false AND invoice_id=$1', [id])
+      return res.json(result)
+    } catch (error) {
+      res.status(400).json({ error })
+    }
+  },
 };
 
 module.exports = orderLinesController;
